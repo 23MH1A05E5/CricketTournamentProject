@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Register Team</title></head>
+<body>
+<h2>Register Team</h2>
+<form th:action="@{/registerteam}" method="POST" th:object="${team}">
+    <label>Team Name:</label>
+    <input type="text" th:field="*{teamName}" placeholder="Team Name"/>
+    <div th:each="player, iterStat : ${team.players}">
+        <p>Player [[${iterStat.index}+1]]</p>
+        <input type="text" th:field="*{players[__${iterStat.index}__].name}" placeholder="Name"/>
+        <input type="number" th:field="*{players[__${iterStat.index}__].age}" placeholder="Age"/>
+        <input type="text" th:field="*{players[__${iterStat.index}__].city}" placeholder="City"/>
+        <br/>
+    </div>
+    <button type="submit">Register Team</button>
+</form>
+</body>
+</html>
