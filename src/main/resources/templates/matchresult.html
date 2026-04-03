@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Match Result</title></head>
+<body>
+    <h2>Match Result</h2>
+    <p th:text="'Team 1: ' + ${match.team1} + ' (Score: ' + ${match.team1Score} + ')'"></p>
+    <p th:text="'Team 2: ' + ${match.team2} + ' (Score: ' + ${match.team2Score} + ')'"></p>
+    <h3 th:text="'Winner: ' + ${match.winner}"></h3>
+</body>
+</html>

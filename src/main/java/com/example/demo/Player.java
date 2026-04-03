@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name = "players")
@@ -10,8 +11,15 @@ public class Player {
     private Long id;
 
     private String name;
+
+    @Min(value = 18, message = "Player must be at least 18 years old")
     private int age;
+
     private String city;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
 
     // Getters and Setters
     public Long getId() { return id; }
@@ -25,4 +33,7 @@ public class Player {
 
     public String getCity() { return city; }
     public void setCity(String city) { this.city = city; }
+
+    public Team getTeam() { return team; }
+    public void setTeam(Team team) { this.team = team; }
 }

@@ -12,7 +12,7 @@ public class Team {
 
     private String teamName;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Player> players;
 
     // Getters and Setters

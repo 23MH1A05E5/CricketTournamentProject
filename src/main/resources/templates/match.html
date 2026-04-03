@@ -1,7 +1,20 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head><title>Match Scheduled</title></head>
 <body>
-<h2>Match Generated!</h2>
-<p th:text="'Team 1: ' + ${match.team1}"></p>
-<p th:text="'Team 2: ' + ${match.team2}"></p>
+    <h2>Match Scheduled!</h2>
+    <p th:text="'Team 1: ' + ${match.team1}"></p>
+    <p th:text="'Team 2: ' + ${match.team2}"></p>
+
+    <h3>Enter Scores</h3>
+    <form th:action="@{/updatematch/{id}(id=${match.id})}" method="post">
+        <label th:text="${match.team1} + ' Score:'"></label>
+        <input type="number" name="team1Score" required><br>
+
+        <label th:text="${match.team2} + ' Score:'"></label>
+        <input type="number" name="team2Score" required><br>
+
+        <button type="submit">Submit Result</button>
+    </form>
 </body>
 </html>
