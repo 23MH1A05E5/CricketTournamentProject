@@ -6,14 +6,14 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: cseoc-app
+      app: springboot-openshift
   template:
     metadata:
       labels:
-        app: cseoc-app
+        app: springboot-openshift
     spec:
       containers:
       - name: springboot-openshift-container
-        image: sravanthie5/cseoc:latest
+        image: sravanthie5/springboot-cricket:latest
         ports:
         - containerPort: 8081
