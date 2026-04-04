@@ -19,6 +19,31 @@ public class TournamentController {
     @Autowired
     private MatchRepo matchRepo;
 
+    @Autowired
+    private TournamentService tournamentService;
+
+    // Index page
+    @GetMapping("/")
+    public String index() {
+        return "index";
+    }
+
+    // Registered teams page
+    @GetMapping("/teams")
+    public String showTeams(Model model) {
+        List<Team> teams = teamRepo.findAll();
+        model.addAttribute("teams", teams);
+        return "teams";
+    }
+
+    // Winning teams page
+    @GetMapping("/winners")
+    public String showWinners(Model model) {
+        List<String> winners = tournamentService.getWinningTeams();
+        model.addAttribute("winners", winners);
+        return "winners";
+    }
+
     @GetMapping("/registerteam")
     public String showTeamForm(Model model) {
         Team team = new Team();
@@ -34,7 +59,6 @@ public class TournamentController {
     public String registerTeam(@Valid @ModelAttribute Team team,
                                BindingResult result,
                                Model model) {
-        // If validation fails (like age < 18), reload form
         if (result.hasErrors()) {
             model.addAttribute("team", team);
             return "registerteam";
@@ -67,20 +91,34 @@ public class TournamentController {
                                     @RequestParam Integer team1Score,
                                     @RequestParam Integer team2Score,
                                     Model model) {
-        Match match = matchRepo.findById(id).orElseThrow();
-        match.setTeam1Score(team1Score);
-        match.setTeam2Score(team2Score);
+        Match match = tournamentService.recordResult(id, team1Score, team2Score);
 
-        if (team1Score > team2Score) {
-            match.setWinner(match.getTeam1());
-        } else if (team2Score > team1Score) {
-            match.setWinner(match.getTeam2());
-        } else {
-            match.setWinner("Draw");
+        List<Match> allMatches = tournamentService.getAllMatches();
+        model.addAttribute("allMatches", allMatches);
+
+        List<String> winners = tournamentService.getWinningTeams();
+        model.addAttribute("winners", winners);
+
+        Match nextMatch = tournamentService.generateNextMatch();
+        model.addAttribute("nextMatch", nextMatch);
+
+        String latestWinner = tournamentService.getLatestMatchWinner();
+        model.addAttribute("latestWinner", latestWinner);
+
+        return "winners";
+    }
+
+    @GetMapping("/matches")
+    public String listMatches(Model model) {
+        List<Match> allMatches = matchRepo.findAll();
+
+        List<List<Match>> batches = new ArrayList<>();
+        for (int i = 0; i < allMatches.size(); i += 2) {
+            int end = Math.min(i + 2, allMatches.size());
+            batches.add(allMatches.subList(i, end));
         }
 
-        matchRepo.save(match);
-        model.addAttribute("match", match);
-        return "matchresult";
+        model.addAttribute("batches", batches);
+        return "matches";
     }
 }

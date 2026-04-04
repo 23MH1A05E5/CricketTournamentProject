@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Winning Teams</title>
+</head>
+<body>
+<h2>Winning Teams</h2>
+<table border="1">
+    <tr>
+        <th>Team Name</th>
+    </tr>
+    <tr th:each="winner : ${winners}">
+        <td th:text="${winner}"></td>
+    </tr>
+</table>
+
+<p><a href="/">Back to Dashboard</a></p>
+</body>
+</html>
